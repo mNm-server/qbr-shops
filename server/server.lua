@@ -2,19 +2,19 @@ local QBCore = exports['qbr-core']:GetCoreObject()
 
 RegisterServerEvent('qbr-shops:server:UpdateShopItems')
 AddEventHandler('qbr-shops:server:UpdateShopItems', function(shop, itemData, amount)
-    Config.Locations[shop]["products"][itemData.slot].amount =  Config.Locations[shop]["products"][itemData.slot].amount - amount
-    if Config.Locations[shop]["products"][itemData.slot].amount <= 0 then 
-        Config.Locations[shop]["products"][itemData.slot].amount = 0
+    Config.Products[shop][itemData.slot].amount =  Config.Products[shop][itemData.slot].amount - amount
+    if Config.Products[shop][itemData.slot].amount <= 0 then 
+        Config.Products[shop][itemData.slot].amount = 0
     end
-    TriggerClientEvent('qbr-shops:client:SetShopItems', -1, shop, Config.Locations[shop]["products"])
+    TriggerClientEvent('qbr-shops:client:SetShopItems', -1, shop, Config.Products[shop])
 end)
 
 RegisterServerEvent('qbr-shops:server:RestockShopItems')
 AddEventHandler('qbr-shops:server:RestockShopItems', function(shop)
-    if Config.Locations[shop]["products"] ~= nil then 
+    if Config.Products[shop] ~= nil then 
         local randAmount = math.random(10, 50)
-        for k, v in pairs(Config.Locations[shop]["products"]) do 
-            Config.Locations[shop]["products"][k].amount = Config.Locations[shop]["products"][k].amount + randAmount
+        for k, v in pairs(Config.Products[shop]) do 
+            Config.Products[shop][k].amount = Config.Products[shop][k].amount + randAmount
         end
         TriggerClientEvent('qbr-shops:client:RestockShopItems', -1, shop, randAmount)
     end
